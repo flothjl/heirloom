@@ -3,7 +3,8 @@ import React, { useMemo, useReducer, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import Main from "./components/Main/Main.js";
 import { AuthContext } from "./contexts/auth";
-import {login} from "./services/heirloomApi"
+import {WebConfigProvider} from "./contexts/webConfig"
+import {login, logout} from "./services/heirloomApi"
 
 export default function App() {
   
@@ -69,13 +70,15 @@ export default function App() {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         state.isLoading = true
-        // setTimeout('', 3000)
-        const token = await login('','')
-        console.log('token from login method: ' + token)
+        const token = await login(data.username,data.password)
         dispatch({ type: "SIGN_IN", token: token });
         state.isLoading = false
       },
-      signOut: () => dispatch({ type: "SIGN_OUT" }),
+      signOut: async () => {
+        state.isLoading = true
+        const response = await logout()
+        dispatch({ type: "SIGN_OUT" })
+      },
       signUp: async (data) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
@@ -88,9 +91,11 @@ export default function App() {
     []
   );
   return (
+    <WebConfigProvider>
     <AuthContext.Provider value={authContext}>
       <Main userToken={state.userToken} isLoading={state.isLoading}/>
     </AuthContext.Provider>
+    </WebConfigProvider>
   );
 }
 

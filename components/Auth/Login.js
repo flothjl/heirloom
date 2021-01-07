@@ -1,44 +1,64 @@
-import React, {useContext, useState} from "react";
-import { Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { Text, View, TextInput } from "react-native";
+import React, { useContext, useState } from "react";
+import { Input, Card } from "react-native-elements";
+import {
+  Text,
+  ImageBackground,
+  ScrollView,
+  View,
+  TouchableHighlight,
+} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import {AuthContext} from "../../contexts/auth"
-
+import { baseStyles as styles } from "../../styleSheet";
+import { AuthContext } from "../../contexts/auth";
+import { WebConfig } from "../../contexts/webConfig";
+import { getRecipes } from "../../services/heirloomApi";
+import HeirloomLoader from "../atoms/Loader"
 
 const Stack = createStackNavigator();
 
-
 const Main = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
+  const webConfig = useContext(WebConfig);
   const { signIn, signOut } = useContext(AuthContext);
- 
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>LoginPage</Text>
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button
-        icon={<Icon name="arrow-right" size={15} color="white" />}
-        title="Button with icon component" onPress={() => signIn({ username, password })}
-      />
-      <Button
-        icon={<Icon name="arrow-right" size={15} color="white" />}
-        title="LOGOUT" onPress={() => signOut()}
-      />
-    </View>
+    <ImageBackground
+    imageStyle={{opacity: 0.2}}
+    style={styles.logo}
+    source={require("../../assets/icons/carrot-1-large.png")}
+  >
+    <ScrollView>
+      <Card containerStyle={{... styles.modalView}}>
+        <Card.Title>CARD WITH DIVIDER</Card.Title>
+        <Card.Divider />
+        <View style={{...styles.centeredView}}>
+          <Input
+            placeholder={webConfig.getText("loginPage.username.label")}
+            value={username}
+            onChangeText={setUsername}
+          />
+          <Input
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+
+          <TouchableHighlight
+            style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+            onPress={() => {
+              signIn({username, password});
+            }}
+          >
+            <Text style={styles.textStyle}>{webConfig.getText("loginPage.loginButton.label")}</Text>
+          </TouchableHighlight>
+        </View>
+      </Card>
+
+    </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -51,7 +71,7 @@ function Login() {
           title: "Login",
         }}
       >
-        {props => <Main {...props}/>}
+        {(props) => <Main {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
