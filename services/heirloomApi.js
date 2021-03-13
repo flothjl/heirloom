@@ -3,8 +3,6 @@ import axios from "axios";
 const baseUrl = "http://127.0.0.1:5000/";
 
 export const login = async function (username, password) {
-  console.log(`Username: ${username}`);
-  console.log(`Password: ${password}`);
   const params = {
     username: username,
     password: password,
@@ -22,6 +20,11 @@ export const getRecipes = async function () {
   let res = await baseRequest("GET", "recipes/get-recipes");
   return res.data;
 };
+
+export const createRecipe = async function(body) {
+  let res = await baseRequest("POST", "recipes/create", body)
+  return res
+}
 
 export const baseRequest = async function (httpType, route, params = null) {
   let res;

@@ -17,6 +17,7 @@ export const baseStyles = StyleSheet.create({
     },
     centeredView: {
       flex: 1,
+      minWidth: '80%',
       flexDirection: 'column',
       justifyContent: "space-between",
       alignItems: "stretch",

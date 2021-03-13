@@ -6,7 +6,8 @@ function RecipeList({ listArray, onItemClick }) {
   let onPress = onItemClick || function(){}
   return (
     <View>
-        {  listArray.map((listItem) => (
+
+        { listArray.map((listItem) => (
       
       <ListItem key={listItem._id} onPress={() => onPress(listItem)} bottomDivider>
         <ListItem.Content>

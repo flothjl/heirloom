@@ -31,11 +31,11 @@ const Main = () => {
   >
     <ScrollView>
       <Card containerStyle={{... styles.modalView}}>
-        <Card.Title>CARD WITH DIVIDER</Card.Title>
+        <Card.Title>{webConfig.getText("loginPage.header.title")}</Card.Title>
         <Card.Divider />
         <View style={{...styles.centeredView}}>
           <Input
-            placeholder={webConfig.getText("loginPage.username.label")}
+            placeholder={webConfig.getText("loginPage.username.placeholder")}
             value={username}
             onChangeText={setUsername}
           />
@@ -52,7 +52,7 @@ const Main = () => {
               signIn({username, password});
             }}
           >
-            <Text style={styles.textStyle}>{webConfig.getText("loginPage.loginButton.label")}</Text>
+            <Text style={styles.textStyle}>{webConfig.getText("loginPage.loginButton.placeholder")}</Text>
           </TouchableHighlight>
         </View>
       </Card>
